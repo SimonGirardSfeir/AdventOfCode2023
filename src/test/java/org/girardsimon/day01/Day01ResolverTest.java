@@ -20,7 +20,8 @@ class Day01ResolverTest {
     @Test
     void resolve_part1_of_day01_problem() {
         // Arrange
-        CalibrationDocument calibrationDocument = CalibrationDocumentParser.parseCalibrationDocumentWithoutSpelledOutDigits(lines);
+        CalibrationDocumentParser parser = new CalibrationDocumentParserDigits();
+        CalibrationDocument calibrationDocument = parser.parseCalibrationDocument(lines);
 
         // Act
         long actualSumOfCalibrationValues = calibrationDocument.sumCalibrationValues();
@@ -31,7 +32,8 @@ class Day01ResolverTest {
     @Test
     void resolve_part2_of_day01_problem() {
         // Arrange
-        CalibrationDocument calibrationDocument = CalibrationDocumentParser.parseCalibrationDocument(lines);
+        CalibrationDocumentParser parser = new CalibrationDocumentParserSpelledOutAndDigits();
+        CalibrationDocument calibrationDocument = parser.parseCalibrationDocument(lines);
 
         // Act
         long actualSumOfCalibrationValues = calibrationDocument.sumCalibrationValues();
