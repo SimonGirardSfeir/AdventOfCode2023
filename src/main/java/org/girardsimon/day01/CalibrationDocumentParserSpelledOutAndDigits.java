@@ -34,13 +34,10 @@ public class CalibrationDocumentParserSpelledOutAndDigits implements Calibration
         return values;
     }
     private static int customIntegerParser(String matcherValue) {
-        if(isADigit(matcherValue)) {
+        if(Character.isDigit(matcherValue.charAt(0))) {
             return Integer.parseInt(matcherValue);
         } else {
             return SpelledOutIntegers.valueOf(matcherValue.toUpperCase(Locale.US)).value();
         }
-    }
-    private static boolean isADigit(String matcherValue) {
-        return matcherValue.length() == 1 && Character.isDigit(matcherValue.charAt(0));
     }
 }

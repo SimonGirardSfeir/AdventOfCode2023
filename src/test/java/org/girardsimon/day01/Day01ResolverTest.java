@@ -24,10 +24,10 @@ class Day01ResolverTest {
         CalibrationDocument calibrationDocument = parser.parseCalibrationDocument(lines);
 
         // Act
-        long actualSumOfCalibrationValues = calibrationDocument.sumCalibrationValues();
+        int actualSumOfCalibrationValues = calibrationDocument.sumCalibrationValues();
 
         // Assert
-        assertThat(actualSumOfCalibrationValues).isEqualTo(54968L);
+        assertThat(actualSumOfCalibrationValues).isEqualTo(54968);
     }
     @Test
     void resolve_part2_of_day01_problem() {
@@ -36,9 +36,9 @@ class Day01ResolverTest {
         CalibrationDocument calibrationDocument = parser.parseCalibrationDocument(lines);
 
         // Act
-        long actualSumOfCalibrationValues = calibrationDocument.sumCalibrationValues();
+        int actualSumOfCalibrationValues = calibrationDocument.sumCalibrationValues();
 
         // Assert
-        assertThat(actualSumOfCalibrationValues).isEqualTo(54094L);
+        assertThat(actualSumOfCalibrationValues).isEqualTo(54094);
     }
 }

@@ -13,9 +13,9 @@ class CalibrationDocumentTest {
         CalibrationDocument calibrationDocument = new CalibrationDocument(List.of(12, 38, 15, 77));
 
         // Act
-        long sumCalibrationValues = calibrationDocument.sumCalibrationValues();
+        int sumCalibrationValues = calibrationDocument.sumCalibrationValues();
 
         // Assert
-        assertThat(sumCalibrationValues).isEqualTo(142L);
+        assertThat(sumCalibrationValues).isEqualTo(142);
     }
 }
