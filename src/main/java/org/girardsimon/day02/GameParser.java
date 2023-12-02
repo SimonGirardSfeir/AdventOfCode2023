@@ -15,9 +15,9 @@ public final class GameParser {
         return new GameSystem(games);
     }
     private static Game parseGame(String line) {
-        String[] splittedLine = line.split(":");
-        int idGame = parseIdGame(splittedLine[0]);
-        List<SetOfCubes> setOfCubesList = parseSetOfCubesList(splittedLine[1]);
+        String[] splitLine = line.split(":");
+        int idGame = parseIdGame(splitLine[0]);
+        List<SetOfCubes> setOfCubesList = parseSetOfCubesList(splitLine[1]);
         return new Game(idGame, setOfCubesList);
     }
     private static int parseIdGame(String input) {
