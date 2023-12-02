@@ -3,6 +3,10 @@ package org.girardsimon.day02;
 import java.util.List;
 
 public record GameSystem(List<Game> games) {
+    public GameSystem {
+        games = List.copyOf(games);
+    }
+
     public int sumGamesIdOfPossibleGame(int redCubes, int greenCubes, int blueCubes) {
         return games.stream()
                 .filter(game -> game.canPlayWithSuppliedCubes(redCubes, greenCubes, blueCubes))

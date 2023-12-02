@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.OptionalInt;
 
 public record Game(int id, List<SetOfCubes> setOfCubesList) {
+    public Game {
+        setOfCubesList = List.copyOf(setOfCubesList);
+    }
+
     public boolean canPlayWithSuppliedCubes(int redCubes, int greenCubes, int blueCubes) {
         return setOfCubesList().stream()
                 .noneMatch(setOfCube -> setOfCube.isSetImpossible(redCubes, greenCubes, blueCubes));
