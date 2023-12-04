@@ -5,6 +5,10 @@ import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
 public record Engine(List<List<EngineElement>> rowOfEngineElements) {
+    public Engine {
+        rowOfEngineElements = List.copyOf(rowOfEngineElements);
+    }
+
     public int sumEngineSchematic() {
         return IntStream.range(0, rowOfEngineElements.size())
                 .map(this::sumPartNumbers)
