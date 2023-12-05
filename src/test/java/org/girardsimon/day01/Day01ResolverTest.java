@@ -1,7 +1,7 @@
 package org.girardsimon.day01;
 
 import org.girardsimon.LineExtractor;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -10,10 +10,10 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class Day01ResolverTest {
-    private List<String> lines;
+    private static List<String> lines;
 
-    @BeforeEach
-    void setUp() throws IOException {
+    @BeforeAll
+    static void setUp() throws IOException {
         lines = LineExtractor.getLines("src/test/resources/day01/inputData.txt");
     }
 

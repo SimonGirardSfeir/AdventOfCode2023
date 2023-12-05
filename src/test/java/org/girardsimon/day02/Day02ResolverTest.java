@@ -1,7 +1,7 @@
 package org.girardsimon.day02;
 
 import org.girardsimon.LineExtractor;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -10,18 +10,16 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class Day02ResolverTest {
-    private List<String> lines;
+    private static GameSystem gameSystem;
 
-    @BeforeEach
-    void setUp() throws IOException {
-        lines = LineExtractor.getLines("src/test/resources/day02/inputData.txt");
+    @BeforeAll
+    static void setUp() throws IOException {
+        List<String> lines = LineExtractor.getLines("src/test/resources/day02/inputData.txt");
+        gameSystem = GameParser.parseGameSystem(lines);
     }
 
     @Test
     void resolve_part1_of_day02_problem() {
-        // Arrange
-        GameSystem gameSystem = GameParser.parseGameSystem(lines);
-
         // Act
         int actualSumOfGamesIdOfPossibleGame = gameSystem.sumGamesIdOfPossibleGame(12, 13, 14);
 
@@ -30,9 +28,6 @@ class Day02ResolverTest {
     }
     @Test
     void resolve_part2_of_day02_problem() {
-        // Arrange
-        GameSystem gameSystem = GameParser.parseGameSystem(lines);
-
         // Act
         int actualGameSystemPower = gameSystem.computeGameSystemPower();
 
