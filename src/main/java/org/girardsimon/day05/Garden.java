@@ -3,7 +3,6 @@ package org.girardsimon.day05;
 import org.girardsimon.common.Range;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,7 +35,7 @@ public record Garden(List<MapElement> toSoilElements, List<MapElement> toFertili
     }
     private static Long processSeed(Long seed, List<MapElement> elements) {
         Optional<MapElement> mapElement = elements.stream()
-                .filter(m -> m.isSeedInRange(seed)).findFirst();
+                .filter(m -> m.isSeedProcessable(seed)).findFirst();
         return mapElement.map(element -> element.processSeed(seed)).orElse(seed);
     }
     public long lowestLocationRangeInput(List<Range<Long>> seedsRanges) {
@@ -62,8 +61,8 @@ public record Garden(List<MapElement> toSoilElements, List<MapElement> toFertili
 
     private static List<Range<Long>> processSeedsRanges(Range<Long> seedRange, List<MapElement> elements) {
         List<MapElement> mapElementsOverlappingWithSeedRange = elements.stream()
-                .filter(e -> e.isOverlappingWithRange(seedRange))
-                .sorted(Comparator.comparingLong(MapElement::sourceRangeStart))
+                .filter(e -> e.isOverlappingWithMapElement(seedRange))
+                .sorted(MapElement::compareTo)
                 .toList();
         if(mapElementsOverlappingWithSeedRange.isEmpty()) {
             return List.of(seedRange);
@@ -80,14 +79,14 @@ public record Garden(List<MapElement> toSoilElements, List<MapElement> toFertili
                                                                    List<MapElement> mapElements) {
         List<Range<Long>> seedRangesExcludedForProcess = new ArrayList<>();
         long startOfSeedRange = seedRange.start();
-        long startOfMapElementRange = mapElements.get(0).sourceRangeStart();
+        long startOfMapElementRange = mapElements.getFirst().sourceRange().start();
         for (MapElement mapElement : mapElements) {
             if (startOfSeedRange < startOfMapElementRange) {
                 seedRangesExcludedForProcess.add(new Range<>(startOfSeedRange, startOfMapElementRange - 1));
             }
-            startOfSeedRange = mapElement.sourceRangeStart() + mapElement.rangeLength();
+            startOfSeedRange = mapElement.sourceRange().end() + 1;
             startOfMapElementRange = mapElements.indexOf(mapElement) < mapElements.size() - 1 ?
-                    mapElements.get(mapElements.indexOf(mapElement) + 1).sourceRangeStart()
+                    mapElements.get(mapElements.indexOf(mapElement) + 1).sourceRange().start()
                     : seedRange.end();
         }
         return seedRangesExcludedForProcess;

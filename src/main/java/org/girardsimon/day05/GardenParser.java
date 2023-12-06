@@ -65,6 +65,7 @@ public final class GardenParser {
         long destinationRangeStart = matcher.find() ? Long.parseLong(matcher.group()) : 0;
         long sourceRangeStart = matcher.find() ? Long.parseLong(matcher.group()) : 0;
         long rangeLength = matcher.find() ? Long.parseLong(matcher.group()) : 0;
-        return new MapElement(destinationRangeStart, sourceRangeStart, rangeLength);
+        return new MapElement(destinationRangeStart,
+                new Range<>(sourceRangeStart, sourceRangeStart +rangeLength -1));
     }
 }

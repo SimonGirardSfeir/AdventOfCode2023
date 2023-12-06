@@ -2,22 +2,24 @@ package org.girardsimon.day05;
 
 import org.girardsimon.common.Range;
 
-public record MapElement(long destinationRangeStart, long sourceRangeStart, long rangeLength) {
+public record MapElement(long destinationRangeStart, Range<Long> sourceRange) implements Comparable<MapElement> {
     public Long processSeed(Long seed) {
-        return seed + (destinationRangeStart - sourceRangeStart);
+        return seed + (destinationRangeStart - sourceRange.start());
     }
-    public boolean isSeedInRange(Long seed) {
-        return seed >= sourceRangeStart
-                && seed < sourceRangeStart + rangeLength;
+    public boolean isSeedProcessable(Long seed) {
+        return sourceRange.isValueInRange(seed);
     }
-    public boolean isOverlappingWithRange(Range<Long> seedRange) {
-        return !(seedRange.end() < sourceRangeStart
-                || seedRange.start() >= sourceRangeStart + rangeLength);
+    public boolean isOverlappingWithMapElement(Range<Long> seedRange) {
+        return sourceRange.isOverlappingWithRange(seedRange);
     }
     public Range<Long> processRange(Range<Long> seedRange) {
-        long min = Math.max(sourceRangeStart, seedRange.start());
-        long max = Math.min(sourceRangeStart + rangeLength -1, seedRange.end());
-        long distance = destinationRangeStart - sourceRangeStart;
+        long min = Math.max(sourceRange.start(), seedRange.start());
+        long max = Math.min(sourceRange.end(), seedRange.end());
+        long distance = destinationRangeStart - sourceRange.start();
         return new Range<>(min+distance, max+distance);
+    }
+    @Override
+    public int compareTo(MapElement o) {
+        return sourceRange.compareTo(o.sourceRange);
     }
 }
