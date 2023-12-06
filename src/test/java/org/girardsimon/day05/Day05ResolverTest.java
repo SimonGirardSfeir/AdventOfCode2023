@@ -1,6 +1,7 @@
 package org.girardsimon.day05;
 
 import org.girardsimon.LineExtractor;
+import org.girardsimon.common.Range;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -30,7 +31,7 @@ class Day05ResolverTest {
     }
     @Test
     void resolve_part2_of_day05_problem() {
-        List<SeedRange> soilInputs = GardenParser.parseSeedsInputsByPair(lines.getFirst());
+        List<Range<Long>> soilInputs = GardenParser.parseSeedsInputsByPair(lines.getFirst());
         Garden garden = GardenParser.parseGarden(lines.subList(2, lines.size()));
 
         // Act

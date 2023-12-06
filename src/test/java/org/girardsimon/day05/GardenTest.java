@@ -1,5 +1,6 @@
 package org.girardsimon.day05;
 
+import org.girardsimon.common.Range;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -23,9 +24,9 @@ class GardenTest {
     void lowestLocationRangeInput_as_range_should_return_lowest_location_between_seeds() {
         // Arrange
         Garden garden = generateGarden();
-        SeedRange seedRange1 = new SeedRange(79L, 92L);
-        SeedRange seedRange2 = new SeedRange(55L, 67L);
-        List<SeedRange> seedRanges = List.of(seedRange1, seedRange2);
+        Range<Long> seedRange1 = new Range<>(79L, 92L);
+        Range<Long> seedRange2 = new Range<>(55L, 67L);
+        List<Range<Long>> seedRanges = List.of(seedRange1, seedRange2);
         // Act
         long actualLowestLocation = garden.lowestLocationRangeInput(seedRanges);
 

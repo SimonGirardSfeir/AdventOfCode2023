@@ -1,5 +1,7 @@
 package org.girardsimon.day05;
 
+import org.girardsimon.common.Range;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -26,17 +28,17 @@ public final class GardenParser {
                 .map(result -> Long.parseLong(result.group()))
                 .toList();
     }
-    public static List<SeedRange> parseSeedsInputsByPair(String line) {
+    public static List<Range<Long>> parseSeedsInputsByPair(String line) {
         return NUMBER_PAIR_REGEX.matcher(line)
                 .results()
                 .map(result -> parseFromPairToList(result.group()))
                 .toList();
     }
-    private static SeedRange parseFromPairToList(String input) {
+    private static Range<Long> parseFromPairToList(String input) {
         Matcher matcher = NUMBER_REGEX.matcher(input);
         long startingRange = matcher.find() ? Long.parseLong(matcher.group()) : 0;
         long rangeLength = matcher.find() ? Long.parseLong(matcher.group()) : 0;
-        return new SeedRange(startingRange, startingRange + rangeLength - 1);
+        return new Range<>(startingRange, startingRange + rangeLength - 1);
     }
     public static Garden parseGarden(List<String> lines) {
         List<List<MapElement>> packetsOfElements = new ArrayList<>();
