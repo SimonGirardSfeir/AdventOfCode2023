@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 
-import static org.girardsimon.common.Patterns.INTEGER_REGEX;
+import static org.girardsimon.common.Patterns.NUMBER_REGEX;
 
 public final class GameParser {
     private GameParser() {
@@ -21,7 +21,7 @@ public final class GameParser {
         return new Game(idGame, setOfCubesList);
     }
     private static int parseIdGame(String input) {
-        Matcher matcher = INTEGER_REGEX.matcher(input);
+        Matcher matcher = NUMBER_REGEX.matcher(input);
         return matcher.find() ? Integer.parseInt(matcher.group()) : 0;
     }
     private static List<SetOfCubes> parseSetOfCubesList(String setOfCubesListAsString) {
@@ -45,7 +45,7 @@ public final class GameParser {
         return Optional.of(matcher)
                 // find the pattern associated with asked color
                 .filter(Matcher::find)
-                .map(m -> INTEGER_REGEX.matcher(m.group()))
+                .map(m -> NUMBER_REGEX.matcher(m.group()))
                 // find the number of cubes associated with the color
                 .filter(Matcher::find)
                 .map(Matcher::group)

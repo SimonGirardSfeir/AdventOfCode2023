@@ -21,7 +21,7 @@ public record CardPile(List<Card> cards) {
         fillCardMapWithCopy(cardsAndNumberOfCopy);
         return cardsAndNumberOfCopy.values()
                 .stream()
-                .mapToInt(i -> i)
+                .mapToInt(Integer::intValue)
                 .sum();
     }
     private void fillCardMapWithCopy(Map<Card, Integer> cardsAndNumberOfCopy) {
