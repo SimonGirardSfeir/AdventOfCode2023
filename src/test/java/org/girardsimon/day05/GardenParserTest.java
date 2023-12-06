@@ -35,7 +35,6 @@ class GardenParserTest {
         List<SeedRange> expectedSeedRanges = List.of(seedRange1, seedRange2);
         assertThat(actualSeedRanges).isEqualTo(expectedSeedRanges);
     }
-
     @Test
     void parseGarden_should_parse_garden_as_expected() {
         // Arrange
@@ -78,5 +77,4 @@ class GardenParserTest {
         Garden expectedGarden = generateGarden();
         assertThat(actualGarden).isEqualTo(expectedGarden);
     }
-
 }
