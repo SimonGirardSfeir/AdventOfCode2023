@@ -12,7 +12,10 @@ public record CamelCardsGame(List<CamelCardHand> camelCardHandDefaults) {
     }
     private static long calculateFinalScore(List<CamelCardHand> sortedList) {
         return IntStream.range(0, sortedList.size())
-                .mapToLong(i -> sortedList.get(i).computeScore(sortedList.get(i), i+1))
+                .mapToLong(i -> computeScore(sortedList.get(i).bid(), i+1))
                 .sum();
+    }
+    private static long computeScore(int bid, int multiplier) {
+        return (long) bid * multiplier;
     }
 }

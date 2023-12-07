@@ -18,9 +18,6 @@ public interface CamelCardHand {
                 .findFirst()
                 .orElse(0);
     }
-    default long computeScore(CamelCardHand camelCardHand, int multiplier) {
-        return (long) bid() * multiplier;
-    }
     /*
         Workaround because abstract class is incompatible with record
      */
