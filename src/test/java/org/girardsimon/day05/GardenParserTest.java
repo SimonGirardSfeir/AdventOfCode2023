@@ -28,12 +28,12 @@ class GardenParserTest {
         String line = "seeds: 79 14 55 13";
 
         // Act
-        List<Range<Long>> actualSeedRanges = GardenParser.parseSeedsInputsByPair(line);
+        List<Range> actualSeedRanges = GardenParser.parseSeedsInputsByPair(line);
 
         // Assert
-        Range<Long> seedRange1 = new Range<>(79L, 92L);
-        Range<Long> seedRange2 = new Range<>(55L,67L);
-        List<Range<Long>> expectedSeedRanges = List.of(seedRange1, seedRange2);
+        Range seedRange1 = new Range(79L, 92L);
+        Range seedRange2 = new Range(55L,67L);
+        List<Range> expectedSeedRanges = List.of(seedRange1, seedRange2);
         assertThat(actualSeedRanges).isEqualTo(expectedSeedRanges);
     }
     @Test

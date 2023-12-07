@@ -27,17 +27,17 @@ public final class GardenParser {
                 .map(result -> Long.parseLong(result.group()))
                 .toList();
     }
-    public static List<Range<Long>> parseSeedsInputsByPair(String line) {
+    public static List<Range> parseSeedsInputsByPair(String line) {
         return NUMBER_PAIR_REGEX.matcher(line)
                 .results()
                 .map(result -> parseFromPairToList(result.group()))
                 .toList();
     }
-    private static Range<Long> parseFromPairToList(String input) {
+    private static Range parseFromPairToList(String input) {
         Matcher matcher = NUMBER_REGEX.matcher(input);
         long startingRange = matcher.find() ? Long.parseLong(matcher.group()) : 0;
         long rangeLength = matcher.find() ? Long.parseLong(matcher.group()) : 0;
-        return new Range<>(startingRange, startingRange + rangeLength - 1);
+        return new Range(startingRange, startingRange + rangeLength - 1);
     }
     public static Garden parseGarden(List<String> lines) {
         List<List<MapElement>> packetsOfElements = new ArrayList<>();
@@ -65,6 +65,6 @@ public final class GardenParser {
         long sourceRangeStart = matcher.find() ? Long.parseLong(matcher.group()) : 0;
         long rangeLength = matcher.find() ? Long.parseLong(matcher.group()) : 0;
         return new MapElement(destinationRangeStart,
-                new Range<>(sourceRangeStart, sourceRangeStart +rangeLength -1));
+                new Range(sourceRangeStart, sourceRangeStart +rangeLength -1));
     }
 }

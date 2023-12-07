@@ -31,7 +31,7 @@ class Day05ResolverTest {
     }
     @Test
     void resolve_part2_of_day05_problem() {
-        List<Range<Long>> soilInputs = GardenParser.parseSeedsInputsByPair(lines.getFirst());
+        List<Range> soilInputs = GardenParser.parseSeedsInputsByPair(lines.getFirst());
         Garden garden = GardenParser.parseGarden(lines.subList(2, lines.size()));
 
         // Act

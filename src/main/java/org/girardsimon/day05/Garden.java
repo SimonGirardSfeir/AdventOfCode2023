@@ -47,7 +47,7 @@ public record Garden(List<MapElement> toSoilElements, List<MapElement> toFertili
         return mapElement.map(element -> element.processSeed(seed)).orElse(seed);
     }
 
-    public long lowestLocationRangeInput(List<Range<Long>> seedsRanges) {
+    public long lowestLocationRangeInput(List<Range> seedsRanges) {
         return seedsRanges.stream()
                 .map(s -> processSeedsRanges(s, toSoilElements))
                 .flatMap(List::stream)
@@ -68,7 +68,7 @@ public record Garden(List<MapElement> toSoilElements, List<MapElement> toFertili
                 .orElse(0L);
     }
 
-    private static List<Range<Long>> processSeedsRanges(Range<Long> seedRange, List<MapElement> elements) {
+    private static List<Range> processSeedsRanges(Range seedRange, List<MapElement> elements) {
         List<MapElement> mapElementsOverlappingWithSeedRange = elements.stream()
                 .filter(e -> e.isOverlappingWithMapElement(seedRange))
                 .sorted(MapElement::compareTo)
@@ -76,34 +76,16 @@ public record Garden(List<MapElement> toSoilElements, List<MapElement> toFertili
         return  mapElementsOverlappingWithSeedRange.isEmpty() ? List.of(seedRange) :
         processSeedRangesWhenThereAreRangeToProcess(seedRange, mapElementsOverlappingWithSeedRange);
     }
-    private static List<Range<Long>> processSeedRangesWhenThereAreRangeToProcess(
-            Range<Long> seedRange, List<MapElement> mapElementsOverlappingWithSeedRange) {
-        List<Range<Long>> seedRanges = new ArrayList<>();
-        seedRanges.addAll(getSeedRangesExcludedForProcess(seedRange, mapElementsOverlappingWithSeedRange));
-        seedRanges.addAll(mapElementsOverlappingWithSeedRange.stream()
-                .map(element -> element.processRange(seedRange))
-                .toList());
-        return seedRanges;
-    }
-
-    private static List<Range<Long>> getSeedRangesExcludedForProcess(Range<Long> seedRange,
-                                                                     List<MapElement> mapElements) {
-        List<Range<Long>> seedRangesExcludedForProcess = new ArrayList<>();
-        List<Range<Long>> rangesFromMapElements = mapElements.stream()
+    private static List<Range> processSeedRangesWhenThereAreRangeToProcess(
+            Range seedRange, List<MapElement> mapElementsOverlappingWithSeedRange) {
+        List<Range> rangesOfMapElement =  mapElementsOverlappingWithSeedRange.stream()
                 .map(MapElement::sourceRange)
                 .toList();
-        long startOfSeedRange = seedRange.start();
-        long startOfMapElementRange = rangesFromMapElements.getFirst().start();
-        for (Range<Long>  rangesFromMapElement : rangesFromMapElements) {
-            if (startOfSeedRange < startOfMapElementRange) {
-                seedRangesExcludedForProcess.add(new Range<>(startOfSeedRange, startOfMapElementRange - 1));
-            }
-            startOfSeedRange = rangesFromMapElement.end() + 1;
-            startOfMapElementRange = rangesFromMapElements
-                    .indexOf(rangesFromMapElement) < rangesFromMapElements.size() - 1 ?
-                    rangesFromMapElements.get(rangesFromMapElements.indexOf(rangesFromMapElement) + 1).start()
-                    : seedRange.end();
-        }
-        return seedRangesExcludedForProcess;
+        List<Range> seedRanges = new ArrayList<>();
+        seedRanges.addAll(seedRange.partsOfRangeThatDoNotIntersectWithAnyOfTheTargetRange(rangesOfMapElement));
+        seedRanges.addAll(mapElementsOverlappingWithSeedRange.stream()
+                .map(element -> element.applyOnRange(seedRange))
+                .toList());
+        return seedRanges;
     }
 }

@@ -24,9 +24,9 @@ class GardenTest {
     void lowestLocationRangeInput_as_range_should_return_lowest_location_between_seeds() {
         // Arrange
         Garden garden = generateGarden();
-        Range<Long> seedRange1 = new Range<>(79L, 92L);
-        Range<Long> seedRange2 = new Range<>(55L, 67L);
-        List<Range<Long>> seedRanges = List.of(seedRange1, seedRange2);
+        Range seedRange1 = new Range(79L, 92L);
+        Range seedRange2 = new Range(55L, 67L);
+        List<Range> seedRanges = List.of(seedRange1, seedRange2);
         // Act
         long actualLowestLocation = garden.lowestLocationRangeInput(seedRanges);
 
