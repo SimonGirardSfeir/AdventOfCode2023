@@ -1,5 +1,7 @@
 package org.girardsimon.day01;
 
+import org.girardsimon.common.SpelledOutIntegers;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
