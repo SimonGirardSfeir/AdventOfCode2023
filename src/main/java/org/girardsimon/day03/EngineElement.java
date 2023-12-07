@@ -11,6 +11,6 @@ public record EngineElement(String data, int startingColumn) {
         return Character.isDigit(data.charAt(0));
     }
     public boolean isASymbol() {
-        return data.length() == 1;
+        return 1 == data.length();
     }
 }

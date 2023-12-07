@@ -6,6 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/*
+    This warning advocates the implementation of a builder pattern,
+    which is inappropriate in this context. All fields in this scenario are required,
+    indicating that there's no variability in object construction that would
+    necessitate a builder pattern.
+ */
+@SuppressWarnings("ConstructorWithTooManyParameters")
 public record Garden(List<MapElement> toSoilElements, List<MapElement> toFertilizerElements,
                      List<MapElement> toWaterElements, List<MapElement> toLightElements,
                      List<MapElement> toTemperatureElements, List<MapElement> toHumidityElements,
@@ -33,11 +40,13 @@ public record Garden(List<MapElement> toSoilElements, List<MapElement> toFertili
                 .min()
                 .orElse(0L);
     }
+
     private static Long processSeed(Long seed, List<MapElement> elements) {
         Optional<MapElement> mapElement = elements.stream()
                 .filter(m -> m.isSeedProcessable(seed)).findFirst();
         return mapElement.map(element -> element.processSeed(seed)).orElse(seed);
     }
+
     public long lowestLocationRangeInput(List<Range<Long>> seedsRanges) {
         return seedsRanges.stream()
                 .map(s -> processSeedsRanges(s, toSoilElements))
@@ -64,10 +73,11 @@ public record Garden(List<MapElement> toSoilElements, List<MapElement> toFertili
                 .filter(e -> e.isOverlappingWithMapElement(seedRange))
                 .sorted(MapElement::compareTo)
                 .toList();
-        if(mapElementsOverlappingWithSeedRange.isEmpty()) {
-            return List.of(seedRange);
-        }
-
+        return  mapElementsOverlappingWithSeedRange.isEmpty() ? List.of(seedRange) :
+        processSeedRangesWhenThereAreRangeToProcess(seedRange, mapElementsOverlappingWithSeedRange);
+    }
+    private static List<Range<Long>> processSeedRangesWhenThereAreRangeToProcess(
+            Range<Long> seedRange, List<MapElement> mapElementsOverlappingWithSeedRange) {
         List<Range<Long>> seedRanges = new ArrayList<>();
         seedRanges.addAll(getSeedRangesExcludedForProcess(seedRange, mapElementsOverlappingWithSeedRange));
         seedRanges.addAll(mapElementsOverlappingWithSeedRange.stream()
@@ -75,18 +85,23 @@ public record Garden(List<MapElement> toSoilElements, List<MapElement> toFertili
                 .toList());
         return seedRanges;
     }
+
     private static List<Range<Long>> getSeedRangesExcludedForProcess(Range<Long> seedRange,
-                                                                   List<MapElement> mapElements) {
+                                                                     List<MapElement> mapElements) {
         List<Range<Long>> seedRangesExcludedForProcess = new ArrayList<>();
+        List<Range<Long>> rangesFromMapElements = mapElements.stream()
+                .map(MapElement::sourceRange)
+                .toList();
         long startOfSeedRange = seedRange.start();
-        long startOfMapElementRange = mapElements.getFirst().sourceRange().start();
-        for (MapElement mapElement : mapElements) {
+        long startOfMapElementRange = rangesFromMapElements.getFirst().start();
+        for (Range<Long>  rangesFromMapElement : rangesFromMapElements) {
             if (startOfSeedRange < startOfMapElementRange) {
                 seedRangesExcludedForProcess.add(new Range<>(startOfSeedRange, startOfMapElementRange - 1));
             }
-            startOfSeedRange = mapElement.sourceRange().end() + 1;
-            startOfMapElementRange = mapElements.indexOf(mapElement) < mapElements.size() - 1 ?
-                    mapElements.get(mapElements.indexOf(mapElement) + 1).sourceRange().start()
+            startOfSeedRange = rangesFromMapElement.end() + 1;
+            startOfMapElementRange = rangesFromMapElements
+                    .indexOf(rangesFromMapElement) < rangesFromMapElements.size() - 1 ?
+                    rangesFromMapElements.get(rangesFromMapElements.indexOf(rangesFromMapElement) + 1).start()
                     : seedRange.end();
         }
         return seedRangesExcludedForProcess;

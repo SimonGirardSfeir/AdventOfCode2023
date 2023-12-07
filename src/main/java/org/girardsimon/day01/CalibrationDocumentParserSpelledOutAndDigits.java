@@ -34,10 +34,7 @@ public class CalibrationDocumentParserSpelledOutAndDigits implements Calibration
         return values;
     }
     private static int customIntegerParser(String matcherValue) {
-        if(Character.isDigit(matcherValue.charAt(0))) {
-            return Integer.parseInt(matcherValue);
-        } else {
-            return SpelledOutIntegers.valueOf(matcherValue.toUpperCase(Locale.US)).value();
-        }
+        return Character.isDigit(matcherValue.charAt(0)) ? Integer.parseInt(matcherValue) :
+                SpelledOutIntegers.valueOf(matcherValue.toUpperCase(Locale.US)).value();
     }
 }

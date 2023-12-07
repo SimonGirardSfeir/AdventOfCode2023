@@ -27,10 +27,8 @@ public final class RaceParser {
         StringBuilder timeFeeder = new StringBuilder();
         StringBuilder  distanceFeeder = new StringBuilder();
 
-        while(matcherTimes.find()) {
+        while(matcherTimes.find() && matcherDistances.find()) {
             timeFeeder.append(matcherTimes.group());
-        }
-        while(matcherDistances.find()) {
             distanceFeeder.append(matcherDistances.group());
         }
         return new Race(Long.parseLong(timeFeeder.toString()),

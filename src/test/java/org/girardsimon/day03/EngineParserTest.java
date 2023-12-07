@@ -19,6 +19,10 @@ class EngineParserTest {
         Engine actualEngine = EngineParser.parseEngine(lines);
 
         // Assert
+        Engine expectedEngine = buildEngine();
+        assertThat(actualEngine).isEqualTo(expectedEngine);
+    }
+    private static Engine buildEngine() {
         EngineElement engineElement1 = new EngineElement("467", 0);
         EngineElement engineElement2 = new EngineElement("114", 5);
         EngineElement engineElement3 = new EngineElement("*", 3);
@@ -28,8 +32,7 @@ class EngineParserTest {
         List<EngineElement> row1 = List.of(engineElement3);
         List<EngineElement> row2 = List.of(engineElement4, engineElement5);
         List<List<EngineElement>> rows = List.of(row0, row1, row2);
-        Engine expectedEngine = new Engine(rows);
-        assertThat(actualEngine).isEqualTo(expectedEngine);
+        return new Engine(rows);
     }
 
 }

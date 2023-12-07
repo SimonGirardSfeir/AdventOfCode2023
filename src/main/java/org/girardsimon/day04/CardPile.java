@@ -25,13 +25,14 @@ public record CardPile(List<Card> cards) {
                 .sum();
     }
     private void fillCardMapWithCopy(Map<Card, Integer> cardsAndNumberOfCopy) {
-        IntStream.range(0, cards.size()).forEach(i -> {
-            int numbersOfWinningNumbersInCard = cards.get(i).numberOfWinningNumber();
-            int currentNumberOfCardCopy = cardsAndNumberOfCopy.get(cards.get(i));
-            IntStream.range(i+1, i + numbersOfWinningNumbersInCard + 1).forEach(j -> {
-                int currentValue = cardsAndNumberOfCopy.get(cards.get(j));
-                cardsAndNumberOfCopy.put(cards.get(j), currentValue + currentNumberOfCardCopy);
-            });
+        IntStream.range(0, cards.size()).forEach(i -> fillFollowingCardsWithCopy(cardsAndNumberOfCopy, i));
+    }
+    private void fillFollowingCardsWithCopy(Map<Card, Integer> cardsAndNumberOfCopy, int i) {
+        int numbersOfWinningNumbersInCard = cards.get(i).numberOfWinningNumber();
+        int currentNumberOfCardCopy = cardsAndNumberOfCopy.get(cards.get(i));
+        IntStream.range(i +1, i + numbersOfWinningNumbersInCard + 1).forEach(j -> {
+            int currentValue = cardsAndNumberOfCopy.get(cards.get(j));
+            cardsAndNumberOfCopy.put(cards.get(j), currentValue + currentNumberOfCardCopy);
         });
     }
     private Map<Card, Integer> initCardMap() {

@@ -53,7 +53,7 @@ public record Engine(List<List<EngineElement>> rowOfEngineElements) {
     private int computeGearRatioForElement(EngineElement element, int rowIndex) {
         List<EngineElement> numbersAdjacent = getNumberAdjacent(rowIndex,
                 element);
-        return numbersAdjacent.size() == 2 ? numbersAdjacent.stream().mapToInt(e -> Integer.parseInt(e.data()))
+        return 2 == numbersAdjacent.size() ? numbersAdjacent.stream().mapToInt(e -> Integer.parseInt(e.data()))
                 .reduce(1, (a,b) -> a*b)
                 : 0;
     }

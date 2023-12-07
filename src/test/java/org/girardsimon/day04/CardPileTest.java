@@ -25,11 +25,18 @@ class CardPileTest {
         // Assert
         assertThat(actualPoints).isEqualTo(10);
     }
-
-
     @Test
-    void numberOfCards_should_return_expectednumber_of_cards() {
+    void numberOfCards_should_return_expected_number_of_cards() {
         // Arrange
+        CardPile cardPile = buildCardPile();
+
+        // Act
+        int actualNumberOfCards = cardPile.numberOfCards();
+
+        // Assert
+        assertThat(actualNumberOfCards).isEqualTo(30);
+    }
+    private static CardPile buildCardPile() {
         Set<Integer> winner1 = Set.of(41, 48, 83, 86, 17);
         Set<Integer> hand1 = Set.of(83, 86, 6, 31, 17, 9, 48, 53);
         Card card1 = new Card(1, winner1, hand1);
@@ -48,13 +55,7 @@ class CardPileTest {
         Set<Integer> winner6 = Set.of(31, 18, 13, 56, 72);
         Set<Integer> hand6 = Set.of(74, 77, 10, 23, 35, 67, 36, 11);
         Card card6 = new Card(6, winner6, hand6);
-        CardPile cardPile = new CardPile(List.of(card1, card2, card3, card4, card5, card6));
-
-        // Act
-        int actualNumberOfCards = cardPile.numberOfCards();
-
-        // Assert
-        assertThat(actualNumberOfCards).isEqualTo(30);
+        return new CardPile(List.of(card1, card2, card3, card4, card5, card6));
     }
 
 }

@@ -20,6 +20,6 @@ public record MapElement(long destinationRangeStart, Range<Long> sourceRange) im
     }
     @Override
     public int compareTo(MapElement o) {
-        return sourceRange.compareTo(o.sourceRange);
+        return sourceRange.compareTo(o.sourceRange());
     }
 }

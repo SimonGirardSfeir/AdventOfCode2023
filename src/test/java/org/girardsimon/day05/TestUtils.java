@@ -4,7 +4,10 @@ import org.girardsimon.common.Range;
 
 import java.util.List;
 
-class TestUtils {
+final class TestUtils {
+    private TestUtils() {
+    }
+
     static Garden generateGarden() {
         MapElement toSoilElement1 = new MapElement(50, new Range<>(98L, 99L));
         MapElement toSoilElement2 = new MapElement(52, new Range<>(50L, 97L));

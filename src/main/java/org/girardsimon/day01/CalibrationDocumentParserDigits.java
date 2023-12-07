@@ -19,7 +19,7 @@ public class CalibrationDocumentParserDigits implements CalibrationDocumentParse
         for (int i = 0; i < line.length(); i++) {
             if (Character.isDigit(line.charAt(i))) {
                 int digit = Character.getNumericValue(line.charAt(i));
-                if (firstDigit == -1) {
+                if (-1 == firstDigit) {
                     firstDigit = digit;
                 }
                 lastDigit = digit;

@@ -11,7 +11,6 @@ import static java.util.Collections.emptyList;
 import static org.girardsimon.common.Patterns.NUMBER_REGEX;
 
 public final class GardenParser {
-    private static final int TO_SOIL_INDEX = 0;
     private static final int TO_FERTILIZER_INDEX = 1;
     private static final int TO_WATER_INDEX = 2;
     private static final int TO_LIGHT_INDEX = 3;
@@ -45,20 +44,20 @@ public final class GardenParser {
 
         packetsOfElements =  lines.stream()
                 .filter(line -> !line.isBlank())
-                .reduce(packetsOfElements, (subtotal, element) -> {
-                    if (!element.isBlank() && !Character.isDigit(element.trim().charAt(0))) {
-                        subtotal.add(new ArrayList<>());
-                    } else {
-                        subtotal.get(subtotal.size() - 1).add(parseMapElement(element));
-                    }
-                    return subtotal;
+                .reduce(packetsOfElements, GardenParser::mapElementsByGroup, (list1, list2) -> emptyList());
 
-                }, (list1, list2) -> emptyList());
-
-        return new Garden(packetsOfElements.get(TO_SOIL_INDEX), packetsOfElements.get(TO_FERTILIZER_INDEX),
+        return new Garden(packetsOfElements.getFirst(), packetsOfElements.get(TO_FERTILIZER_INDEX),
                 packetsOfElements.get(TO_WATER_INDEX), packetsOfElements.get(TO_LIGHT_INDEX),
                 packetsOfElements.get(TO_TEMPERATURE_INDEX), packetsOfElements.get(TO_HUMIDITY_INDEX),
                 packetsOfElements.get(TO_LOCATION_INDEX));
+    }
+    private static List<List<MapElement>> mapElementsByGroup(List<List<MapElement>> subtotal, String element) {
+        if (!element.isBlank() && !Character.isDigit(element.strip().charAt(0))) {
+            subtotal.add(new ArrayList<>());
+        } else {
+            subtotal.getLast().add(parseMapElement(element));
+        }
+        return subtotal;
     }
     private static MapElement parseMapElement(String line) {
         Matcher matcher = NUMBER_REGEX.matcher(line);
