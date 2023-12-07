@@ -20,7 +20,7 @@ public interface CamelCardHand {
     }
     /*
         Workaround because abstract class is incompatible with record
-     */
+    */
     List<CamelCard> camelCards();
     int bid();
 }

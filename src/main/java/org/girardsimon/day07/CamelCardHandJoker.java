@@ -9,6 +9,10 @@ import static org.girardsimon.day07.CamelCard.J;
 
 public record CamelCardHandJoker(List<CamelCard> camelCards, int bid) implements CamelCardHand,
         Comparable<CamelCardHandJoker> {
+    public CamelCardHandJoker {
+        camelCards = List.copyOf(camelCards);
+    }
+
     @Override
     public int compareTo(CamelCardHandJoker o) {
         int compareTypeHand = compareTypeHand(o);
@@ -16,19 +20,19 @@ public record CamelCardHandJoker(List<CamelCard> camelCards, int bid) implements
     }
     @Override
     public int compareCard(CamelCard card, CamelCard cardToCompare) {
-        int output;
-        if(card != cardToCompare && J == card) {
-            output = -1;
-        } else if(card != cardToCompare && J == cardToCompare) {
-            output = 1;
-        } else {
-            output = Integer.compare(card.strength(), cardToCompare.strength());
-        }
-        return output;
+        return isExactlyOneOfTheCardAJoker(card, cardToCompare) ?
+                jokerIsTheWeakest(card) :
+                Integer.compare(card.strength(), cardToCompare.strength());
+    }
+    private static int jokerIsTheWeakest(CamelCard card) {
+        return J == card ? -1 : 1;
+    }
+    private static boolean isExactlyOneOfTheCardAJoker(CamelCard card, CamelCard comparisonCard) {
+        return ((J == card) || (J == comparisonCard)) && card != comparisonCard;
     }
     @Override
     public TypeHand getTypeHandFromCards(List<CamelCard> camelCards) {
-        List<Long> twoPrincipalOccurrences = camelCards.stream()
+        List<Long> topTwoOccurrencesExcludingJoker = camelCards.stream()
                 .filter(c -> J != c)
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
                 .values()
@@ -36,8 +40,10 @@ public record CamelCardHandJoker(List<CamelCard> camelCards, int bid) implements
                 .sorted(Comparator.reverseOrder())
                 .limit(2L)
                 .toList();
-        long topOccurrence = twoPrincipalOccurrences.isEmpty() ? 0 : twoPrincipalOccurrences.getFirst();
-        long secondTopOccurrence = 1 >= twoPrincipalOccurrences.size() ? 0 : twoPrincipalOccurrences.getLast();
+        long topOccurrence = topTwoOccurrencesExcludingJoker.isEmpty() ?
+                0 : topTwoOccurrencesExcludingJoker.getFirst();
+        long secondTopOccurrence = 1 >= topTwoOccurrencesExcludingJoker.size() ?
+                0 : topTwoOccurrencesExcludingJoker.getLast();
 
         long numberOfJokers = camelCards.stream()
                 .filter(c -> J == c)
