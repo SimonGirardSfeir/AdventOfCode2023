@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class EngineParser {
-    private static final Pattern SYMBOL_REGEXP =
+    private static final Pattern ENGINE_SYMBOL_PATTERN =
             Pattern.compile("(\\d+)|([^\\d.])");
     private EngineParser() {
     }
@@ -19,7 +19,7 @@ public final class EngineParser {
     }
     private static List<EngineElement> parseLine(String line) {
         List<EngineElement> engineElements = new ArrayList<>();
-        Matcher matcher = SYMBOL_REGEXP.matcher(line);
+        Matcher matcher = ENGINE_SYMBOL_PATTERN.matcher(line);
 
         while(matcher.find()) {
             EngineElement engineElement = new EngineElement(matcher.group(), matcher.start());

@@ -8,7 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static java.util.Collections.emptyList;
-import static org.girardsimon.common.Patterns.NUMBER_REGEX;
+import static org.girardsimon.common.Patterns.NUMBER_PATTERN;
 
 public final class GardenParser {
     private static final int TO_FERTILIZER_INDEX = 1;
@@ -17,24 +17,24 @@ public final class GardenParser {
     private static final int TO_TEMPERATURE_INDEX = 4;
     private static final int TO_HUMIDITY_INDEX = 5;
     private static final int TO_LOCATION_INDEX = 6;
-    private static final Pattern NUMBER_PAIR_REGEX = Pattern.compile("\\d+ \\d+");
+    private static final Pattern NUMBER_PAIR_PATTERN = Pattern.compile("\\d+ \\d+");
     private GardenParser() {
     }
 
     public static List<Long> parseSeedsInputs(String line) {
-        return NUMBER_REGEX.matcher(line)
+        return NUMBER_PATTERN.matcher(line)
                 .results()
                 .map(result -> Long.parseLong(result.group()))
                 .toList();
     }
     public static List<Range> parseSeedsInputsByPair(String line) {
-        return NUMBER_PAIR_REGEX.matcher(line)
+        return NUMBER_PAIR_PATTERN.matcher(line)
                 .results()
                 .map(result -> parseFromPairToList(result.group()))
                 .toList();
     }
     private static Range parseFromPairToList(String input) {
-        Matcher matcher = NUMBER_REGEX.matcher(input);
+        Matcher matcher = NUMBER_PATTERN.matcher(input);
         long startingRange = matcher.find() ? Long.parseLong(matcher.group()) : 0;
         long rangeLength = matcher.find() ? Long.parseLong(matcher.group()) : 0;
         return new Range(startingRange, startingRange + rangeLength - 1);
@@ -60,7 +60,7 @@ public final class GardenParser {
         return subtotal;
     }
     private static MapElement parseMapElement(String line) {
-        Matcher matcher = NUMBER_REGEX.matcher(line);
+        Matcher matcher = NUMBER_PATTERN.matcher(line);
         long destinationRangeStart = matcher.find() ? Long.parseLong(matcher.group()) : 0;
         long sourceRangeStart = matcher.find() ? Long.parseLong(matcher.group()) : 0;
         long rangeLength = matcher.find() ? Long.parseLong(matcher.group()) : 0;

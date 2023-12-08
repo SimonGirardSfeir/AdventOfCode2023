@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 import static org.girardsimon.common.Constants.DECIMAL_SYSTEM_BASE;
 
 public class CalibrationDocumentParserSpelledOutAndDigits implements CalibrationDocumentParser {
-    private static final Pattern CUSTOM_DIGIT_REGEXP =
+    private static final Pattern CUSTOM_NUMBER_PATTERN =
             Pattern.compile("\\d|one|two|three|four|five|six|seven|eight|nine");
     @Override
     public CalibrationDocument parseCalibrationDocument(List<String> lines) {
@@ -21,7 +21,7 @@ public class CalibrationDocumentParserSpelledOutAndDigits implements Calibration
         return new CalibrationDocument(calibrationValues);
     }
     private static int parseLine(String line) {
-        Matcher matcher = CUSTOM_DIGIT_REGEXP.matcher(line);
+        Matcher matcher = CUSTOM_NUMBER_PATTERN.matcher(line);
         List<Integer> values = extractValues(matcher);
         return values.getFirst() * DECIMAL_SYSTEM_BASE + values.getLast();
     }
