@@ -8,7 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static java.util.Collections.emptyList;
-import static org.girardsimon.common.Patterns.NUMBER_PATTERN;
+import static org.girardsimon.common.Patterns.POSITIVE_NUMBER_PATTERN;
 
 public final class GardenParser {
     private static final int TO_FERTILIZER_INDEX = 1;
@@ -22,7 +22,7 @@ public final class GardenParser {
     }
 
     public static List<Long> parseSeedsInputs(String line) {
-        return NUMBER_PATTERN.matcher(line)
+        return POSITIVE_NUMBER_PATTERN.matcher(line)
                 .results()
                 .map(result -> Long.parseLong(result.group()))
                 .toList();
@@ -34,7 +34,7 @@ public final class GardenParser {
                 .toList();
     }
     private static Range parseFromPairToList(String input) {
-        Matcher matcher = NUMBER_PATTERN.matcher(input);
+        Matcher matcher = POSITIVE_NUMBER_PATTERN.matcher(input);
         long startingRange = matcher.find() ? Long.parseLong(matcher.group()) : 0;
         long rangeLength = matcher.find() ? Long.parseLong(matcher.group()) : 0;
         return new Range(startingRange, startingRange + rangeLength - 1);
@@ -60,7 +60,7 @@ public final class GardenParser {
         return subtotal;
     }
     private static MapElement parseMapElement(String line) {
-        Matcher matcher = NUMBER_PATTERN.matcher(line);
+        Matcher matcher = POSITIVE_NUMBER_PATTERN.matcher(line);
         long destinationRangeStart = matcher.find() ? Long.parseLong(matcher.group()) : 0;
         long sourceRangeStart = matcher.find() ? Long.parseLong(matcher.group()) : 0;
         long rangeLength = matcher.find() ? Long.parseLong(matcher.group()) : 0;

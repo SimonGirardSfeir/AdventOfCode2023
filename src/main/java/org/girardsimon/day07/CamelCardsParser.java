@@ -5,7 +5,7 @@ import org.girardsimon.common.SpelledOutIntegers;
 import java.util.List;
 import java.util.function.BiFunction;
 
-import static org.girardsimon.common.Patterns.NUMBER_PATTERN;
+import static org.girardsimon.common.Patterns.POSITIVE_NUMBER_PATTERN;
 
 public final class CamelCardsParser {
     private CamelCardsParser() {
@@ -37,7 +37,7 @@ public final class CamelCardsParser {
                 .toList();
     }
     private static CamelCard mapCharToCamelCard(String singleCharacterString) {
-        return NUMBER_PATTERN.matcher(singleCharacterString).find() ?
+        return POSITIVE_NUMBER_PATTERN.matcher(singleCharacterString).find() ?
                 CamelCard.valueOf(
                         SpelledOutIntegers.getSpelledOutIntegerByValue(
                         Integer.parseInt(singleCharacterString)).toString()) :

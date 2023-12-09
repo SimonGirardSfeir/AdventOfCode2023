@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 
-import static org.girardsimon.common.Patterns.NUMBER_PATTERN;
+import static org.girardsimon.common.Patterns.POSITIVE_NUMBER_PATTERN;
 
 public final class RaceParser {
     private RaceParser() {
     }
 
     public static RaceDocument parseRaceDocument(List<String> lines) {
-        Matcher matcherTimes = NUMBER_PATTERN.matcher(lines.getFirst());
-        Matcher matcherDistances = NUMBER_PATTERN.matcher(lines.getLast());
+        Matcher matcherTimes = POSITIVE_NUMBER_PATTERN.matcher(lines.getFirst());
+        Matcher matcherDistances = POSITIVE_NUMBER_PATTERN.matcher(lines.getLast());
         List<Race> races = new ArrayList<>();
         while(matcherTimes.find() && matcherDistances.find()) {
             races.add(new Race(Long.parseLong(matcherTimes.group()),
@@ -22,8 +22,8 @@ public final class RaceParser {
     }
 
     public static Race parseRace(List<String> lines) {
-        Matcher matcherTimes = NUMBER_PATTERN.matcher(lines.getFirst());
-        Matcher matcherDistances = NUMBER_PATTERN.matcher(lines.getLast());
+        Matcher matcherTimes = POSITIVE_NUMBER_PATTERN.matcher(lines.getFirst());
+        Matcher matcherDistances = POSITIVE_NUMBER_PATTERN.matcher(lines.getLast());
         StringBuilder timeFeeder = new StringBuilder();
         StringBuilder  distanceFeeder = new StringBuilder();
 
