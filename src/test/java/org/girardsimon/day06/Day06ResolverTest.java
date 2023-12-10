@@ -19,6 +19,7 @@ class Day06ResolverTest {
 
     @Test
     void resolve_part1_of_day06_problem() {
+        // Arrange
         RaceDocument raceDocument = RaceParser.parseRaceDocument(lines);
 
         // Act
@@ -29,6 +30,7 @@ class Day06ResolverTest {
     }
     @Test
     void resolve_part2_of_day06_problem() {
+        // Arrange
         Race race = RaceParser.parseRace(lines);
 
         // Act

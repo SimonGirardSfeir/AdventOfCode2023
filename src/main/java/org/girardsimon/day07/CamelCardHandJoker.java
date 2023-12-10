@@ -7,16 +7,10 @@ import java.util.stream.Collectors;
 
 import static org.girardsimon.day07.CamelCard.J;
 
-public record CamelCardHandJoker(List<CamelCard> camelCards, int bid) implements CamelCardHand,
-        Comparable<CamelCardHandJoker> {
-    public CamelCardHandJoker {
-        camelCards = List.copyOf(camelCards);
-    }
+public final class CamelCardHandJoker extends CamelCardHand {
 
-    @Override
-    public int compareTo(CamelCardHandJoker o) {
-        int compareTypeHand = compareTypeHand(o);
-        return 0 != compareTypeHand ? compareTypeHand : compareCards(o);
+    public CamelCardHandJoker(List<CamelCard> camelCards, int bid) {
+        super(camelCards, bid);
     }
     @Override
     public int compareCard(CamelCard card, CamelCard cardToCompare) {

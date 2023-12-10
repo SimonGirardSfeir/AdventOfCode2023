@@ -5,17 +5,11 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public record CamelCardHandDefault(List<CamelCard> camelCards, int bid) implements CamelCardHand,
-        Comparable<CamelCardHandDefault> {
-    public CamelCardHandDefault {
-        camelCards = List.copyOf(camelCards);
+public final class CamelCardHandDefault extends CamelCardHand {
+    public CamelCardHandDefault(List<CamelCard> camelCards, int bid) {
+        super(camelCards, bid);
     }
 
-    @Override
-    public int compareTo(CamelCardHandDefault o) {
-        int compareTypeHand = compareTypeHand(o);
-        return 0 != compareTypeHand ? compareTypeHand : compareCards(o);
-    }
     @Override
     public int compareCard(CamelCard card, CamelCard cardToCompare) {
         return Integer.compare(card.strength(), cardToCompare.strength());
