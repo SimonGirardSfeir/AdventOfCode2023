@@ -8,8 +8,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.Optional;
+import java.util.function.UnaryOperator;
 
 public enum Pipe {
 
@@ -71,56 +71,63 @@ public enum Pipe {
             difY = 0 == difY1 ? difY2 : difY1;
         }
         return BY_TUPLE.get(new Tuple(difX, difY));
-        
     }
 
     public List<Position> neighborPositions(Position position, Map<Position, Pipe> positionsAndPipes) {
         List<Position> neighborPositions = new ArrayList<>();
         if(START == this) {
-            neighborPositions.addAll(addPositionsHorizontally(position, positionsAndPipes, -1));
-            neighborPositions.addAll(addPositionsHorizontally(position, positionsAndPipes, 1));
-            neighborPositions.addAll(addPositionsVertically(position, positionsAndPipes, -1));
-            neighborPositions.addAll(addPositionsVertically(position, positionsAndPipes, 1));
+            addPossiblePosition(position, positionsAndPipes, -1, p -> p.fromDx(-1),
+                    (p, delta) -> -delta == p.dx() || 0 == p.dy())
+                    .ifPresent(neighborPositions::add);
+            addPossiblePosition(position, positionsAndPipes, 1, p -> p.fromDx(1),
+                    (p, delta) -> -delta == p.dx() || 0 == p.dy())
+                    .ifPresent(neighborPositions::add);
+            addPossiblePosition(position, positionsAndPipes, 1, p -> p.fromDy(1),
+                    (p, delta) -> -delta == p.dy() || 0 == p.dx())
+                    .ifPresent(neighborPositions::add);
+            addPossiblePosition(position, positionsAndPipes, -1, p -> p.fromDy(-1),
+                    (p, delta) -> -delta == p.dy() || 0 == p.dx())
+                    .ifPresent(neighborPositions::add);
         } else if (0 == dy()) {
-            neighborPositions.addAll(addPositionsHorizontally(position, positionsAndPipes, -1));
-            neighborPositions.addAll(addPositionsHorizontally(position, positionsAndPipes, 1));
+            addPossiblePosition(position, positionsAndPipes, -1, p -> p.fromDx(-1),
+                    (p, delta) -> -delta == p.dx() || 0 == p.dy())
+                    .ifPresent(neighborPositions::add);
+            addPossiblePosition(position, positionsAndPipes, 1, p -> p.fromDx(1),
+                    (p, delta) -> -delta == p.dx() || 0 == p.dy())
+                    .ifPresent(neighborPositions::add);
         } else if( 0 == dx()) {
-            neighborPositions.addAll(addPositionsVertically(position, positionsAndPipes, -1));
-            neighborPositions.addAll(addPositionsVertically(position, positionsAndPipes, 1));
+            addPossiblePosition(position, positionsAndPipes, 1, p -> p.fromDy(1),
+                    (p, delta) -> -delta == p.dy() || 0 == p.dx())
+                    .ifPresent(neighborPositions::add);
+            addPossiblePosition(position, positionsAndPipes, -1, p -> p.fromDy(-1),
+                    (p, delta) -> -delta == p.dy() || 0 == p.dx())
+                    .ifPresent(neighborPositions::add);
         } else {
-            neighborPositions.addAll(addPositionsVertically(position, positionsAndPipes, dy()));
-            neighborPositions.addAll(addPositionsHorizontally(position, positionsAndPipes, dx()));
+            addPossiblePosition(position, positionsAndPipes, dy(), p -> p.fromDy(dy()),
+                    (p, delta) -> -delta == p.dy() || 0 == p.dx())
+                    .ifPresent(neighborPositions::add);
+            addPossiblePosition(position, positionsAndPipes, dx(), p -> p.fromDx(dx()),
+                    (p, delta) -> -delta == p.dx() || 0 == p.dy())
+                    .ifPresent(neighborPositions::add);
         }
         return neighborPositions;
     }
+    private static Optional<Position> addPossiblePosition(Position position,
+                                                          Map<Position, Pipe> positionsAndPipes,
+                                                          int delta,
+                                                          UnaryOperator<Position> positionTransformer,
+                                                          PipeFilter filter) {
+        Position positionToBeAdded = positionTransformer.apply(position);
+        return (isThereAMatchingPipe(positionToBeAdded, positionsAndPipes, delta, filter)) ?
+                Optional.of(positionToBeAdded) : Optional.empty();
+    }
+    private static boolean isThereAMatchingPipe(Position positionToBeAdded,
+                                         Map<Position, Pipe> positionsAndPipes,
+                                         int delta,
+                                         PipeFilter filter) {
+        return positionsAndPipes.containsKey(positionToBeAdded) && Arrays.stream(values())
+                .anyMatch(p -> filter.test(p, delta) && p == positionsAndPipes.get(positionToBeAdded) && START != p);
 
-    private static List<Position> addPositionsHorizontally(Position position,
-                               Map<Position, Pipe> positionsAndPipes, int dx) {
-        List<Position> neighborPositions = new ArrayList<>();
-        if (positionsAndPipes.containsKey(position.fromDx(dx))) {
-            Pipe pipe = positionsAndPipes.get(position.fromDx(dx));
-            Set<Pipe> pipes = Arrays.stream(values())
-                    .filter(p -> (-dx == p.dx() || 0 == p.dy()) && START != p)
-                    .collect(Collectors.toSet());
-            if (pipes.contains(pipe)) {
-                neighborPositions.add(position.fromDx(dx));
-            }
-        }
-        return neighborPositions;
-    }
-    private static List<Position> addPositionsVertically(Position position,
-                                                         Map<Position, Pipe> positionsAndPipes, int dy) {
-        List<Position> neighborPositions = new ArrayList<>();
-        if (positionsAndPipes.containsKey(position.fromDy(dy))) {
-            Pipe pipe = positionsAndPipes.get(position.fromDy(dy));
-            Set<Pipe> pipes = Arrays.stream(values())
-                    .filter(p -> (-dy == p.dy() || 0 == p.dx()) && START != p)
-                    .collect(Collectors.toSet());
-            if (pipes.contains(pipe)) {
-                neighborPositions.add(position.fromDy(dy));
-            }
-        }
-        return neighborPositions;
     }
 
     public int dx() {
