@@ -15,6 +15,7 @@ java {
 }
 
 dependencies {
+    implementation("com.google.guava:guava:32.1.3-jre")
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.9.2")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.9.2")

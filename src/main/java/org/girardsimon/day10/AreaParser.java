@@ -1,33 +1,39 @@
 package org.girardsimon.day10;
-
 import org.girardsimon.common.Position;
-
-import java.util.HashMap;
+import java.util.AbstractMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.Optional;
 
 public final class AreaParser {
+
     private AreaParser() {
     }
 
     public static Area parseArea(List<String> lines) {
-        Map<Position, Pipe> positionsAndPipes = new HashMap<>();
-        Position startingPosition = null;
-        for(int i = 0; i < lines.getFirst().length(); i++) {
-            String currentLine = lines.get(i);
-            for(int j = 0; j < currentLine.length(); j++) {
-                char currentChar = currentLine.charAt(j);
-                if('.' != currentChar) {
-                    Position currentPosition = new Position(j, currentLine.length()-1-i);
-                    Pipe currentPipe = Pipe.getPipeFromChar(currentChar);
-                    if(Pipe.START == currentPipe) {
-                        startingPosition = currentPosition;
-                    }
-                    positionsAndPipes.put(currentPosition, currentPipe);
-                }
-            }
-        }
+        int linesSize = lines.size();
+        List<AbstractMap.SimpleEntry<Position, Pipe>> positionsAndPipesList = IntStream.range(0, linesSize)
+                .boxed()
+                .flatMap(i -> IntStream
+                        .range(0, lines.get(i).length())
+                        .filter(j -> '.' != lines.get(i).charAt(j))
+                        .mapToObj(j -> new AbstractMap.SimpleEntry<>(
+                                new Position(j, linesSize - 1 - i),
+                                Pipe.getPipeFromChar(lines.get(i).charAt(j))
+                        ))
+                ).toList();
 
-        return new Area(positionsAndPipes, startingPosition);
+        Optional<AbstractMap.SimpleEntry<Position, Pipe>> startPosEntryOpt = positionsAndPipesList.stream()
+                .filter(entry -> Pipe.START == entry.getValue())
+                .findFirst();
+
+        Map<Position, Pipe> positionsAndPipes = positionsAndPipesList.stream()
+                .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+
+        return startPosEntryOpt
+                .map(startPosEntry -> new Area(positionsAndPipes, startPosEntry.getKey()))
+                .orElseThrow(() -> new IllegalArgumentException("Starting position not found."));
     }
 }

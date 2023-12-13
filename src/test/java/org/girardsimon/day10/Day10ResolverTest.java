@@ -32,6 +32,6 @@ class Day10ResolverTest {
         int actualSteps = area.tilesEnclosedByTheLoop();
 
         // Assert
-        assertThat(actualSteps).isEqualTo(7097);
+        assertThat(actualSteps).isEqualTo(355);
     }
 }
