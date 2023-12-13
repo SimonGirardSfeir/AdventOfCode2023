@@ -19,12 +19,24 @@ class Day11ResolverTest {
     @Test
     void resolve_part1_of_day11_problem() {
         // Arrange
-        Sky sky = SkyParser.parseSky(lines);
+        Sky sky = SkyParser.parseSky(lines, 1);
 
         // Act
         long actualSumOfShortestPath = sky.sumOfShortestPath();
 
         // Assert
         assertThat(actualSumOfShortestPath).isEqualTo(10173804L);
+    }
+
+    @Test
+    void resolve_part2_of_day11_problem() {
+        // Arrange
+        Sky sky = SkyParser.parseSky(lines, 1000000-1);
+
+        // Act
+        long actualSumOfShortestPath = sky.sumOfShortestPath();
+
+        // Assert
+        assertThat(actualSumOfShortestPath).isEqualTo(634324905172L);
     }
 }
