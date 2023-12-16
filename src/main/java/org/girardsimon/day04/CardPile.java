@@ -30,10 +30,10 @@ public record CardPile(List<Card> cards) {
     private void fillFollowingCardsWithCopy(Map<Card, Integer> cardsAndNumberOfCopy, int i) {
         int numbersOfWinningNumbersInCard = cards.get(i).numberOfWinningNumber();
         int currentNumberOfCardCopy = cardsAndNumberOfCopy.get(cards.get(i));
-        IntStream.range(i +1, i + numbersOfWinningNumbersInCard + 1).forEach(j -> {
-            int currentValue = cardsAndNumberOfCopy.get(cards.get(j));
-            cardsAndNumberOfCopy.put(cards.get(j), currentValue + currentNumberOfCardCopy);
-        });
+        IntStream.range(i +1, i + numbersOfWinningNumbersInCard + 1)
+                .forEach(j ->
+                        cardsAndNumberOfCopy.compute(cards.get(j),
+                                (k, currentValue) -> currentValue + currentNumberOfCardCopy));
     }
     private Map<Card, Integer> initCardMap() {
         return cards.stream()

@@ -5,6 +5,11 @@ plugins {
 group = "org.girardsimon"
 version = "1.0-SNAPSHOT"
 
+val guavaVersion = "33.2.0-jre"
+val jUnitVersion = "5.10.2"
+val jUnitPlatformLauncherVersion = "1.10.2"
+val assertjVersion = "3.25.3"
+
 repositories {
     mavenCentral()
 }
@@ -15,11 +20,11 @@ java {
 }
 
 dependencies {
-    implementation("com.google.guava:guava:32.1.3-jre")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.9.2")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.9.2")
-    testImplementation("org.assertj:assertj-core:3.24.2")
+    implementation("com.google.guava:guava:$guavaVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter:$jUnitVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:$jUnitVersion")
+    testImplementation("org.assertj:assertj-core:$assertjVersion")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:$jUnitPlatformLauncherVersion")
 }
 
 tasks.test {

@@ -27,4 +27,16 @@ class Day12ResolverTest {
         // Assert
         assertThat(actualNumber).isEqualTo(7221L);
     }
+
+    @Test
+    void resolve_part2_of_day12_problem() {
+        // Arrange
+        SpringSystem system = SpringParser.parseSpringSystem(lines);
+
+        // Act
+        long actualNumber = system.sumOfPossibleArrangementsUnfolded();
+
+        // Assert
+        assertThat(actualNumber).isEqualTo(7139671893722L);
+    }
 }
