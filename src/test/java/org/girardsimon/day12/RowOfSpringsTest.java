@@ -36,4 +36,26 @@ class RowOfSpringsTest {
         // Assert
         assertThat(actualNumber).isEqualTo(expectedNumber);
     }
+
+    private static Stream<Arguments> rowsAndExpectedPossibleArrangementsUnfolded() {
+        return Stream.of(
+                Arguments.of("???.###", List.of(1,1,3), 1),
+                Arguments.of(".??..??...?##.", List.of(1,1,3), 16384),
+                Arguments.of("?#?#?#?#?#?#?#?", List.of(1,3,1,6), 1),
+                Arguments.of("????.#...#...", List.of(4,1,1), 16),
+                Arguments.of("????.######..#####.", List.of(1,6,5), 2500),
+                Arguments.of("?###????????", List.of(3,2,1), 506250)
+        );
+    }
+    @ParameterizedTest
+    @MethodSource("rowsAndExpectedPossibleArrangementsUnfolded")
+    void numberOfPossibleArrangementsUnfolded_should_return_expected_number_of_possible_arrangements_for_group_of_broken_springs(
+            String input, List<Integer> list, long expectedNumber) {
+        // Arrange
+        RowOfSprings rowOfSprings = new RowOfSprings(input, list);
+        // Act
+        double actualNumber = rowOfSprings.numberOfPossibleArrangementsUnfolded();
+        // Assert
+        assertThat(actualNumber).isEqualTo(expectedNumber);
+    }
 }

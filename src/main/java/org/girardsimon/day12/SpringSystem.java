@@ -11,4 +11,9 @@ public record SpringSystem(List<RowOfSprings> rowOfSprings) {
                 .mapToLong(RowOfSprings::numberOfPossibleArrangements)
                 .sum();
     }
+    public long sumOfPossibleArrangementsUnfolded() {
+        return rowOfSprings.stream()
+                .mapToLong(RowOfSprings::numberOfPossibleArrangementsUnfolded)
+                .sum();
+    }
 }
